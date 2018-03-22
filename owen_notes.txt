@@ -1,0 +1,166 @@
+OWEN NOTES
+
+tmux:
+split screen into any number of machines and configure the keyboard to run stuff on all of them
+
+
+ifconfig:
+rx packets count: see if any errors received
+tx packets count: see if errors transmitted
+
+netmask: 255:255:255:0 means the last byte is stuff in your network, to hit stuff outside this you'll need
+an internet gateway
+
+.255 at the end sends to all on network
+.0
+.1-5 is reserved typically by the network
+
+you need a subnet for each availability zone pn AWS
+IGW is public subnet
+NAT is private subnet - has to have an elastic IP
+
+use separate VPC for prod
+
+routing tables:
+route -n
+
+169.254.0.0 is default
+
+
+netstat -l (listening sockets)
+netstat -tlpn
+
+to run every x seconds: watch -n defaults to 5
+watch -n 2 (every 2 seconds)
+watch -n 2 ls (runs ls every 2 seconds)
+
+sudo -su (switch user) to get root
+
+lsof (list open files
+lsof | awk '{print $5, $9}' (just print column 5 and 9)
+or format the columns:
+lsof | awk '{print "$5 -- $9"}'
+lsof -i (only network sockets)
+
+man ls (manual for ls command)
+info ls (info about ls command)
+ctrl x ctrl c to get out of emacs
+to quit VI: shift ZZ
+
+VI:
+%s/i/z (replaces all i's with z's)
+%s/z/i/g (g for globally)
+lsof -i | sed -e 's/chronium/HAHAHHA' (change all chronium text to hahahha)
+
+
+ps -fu osmith | cut -d: f1 (delimiter is colon, field 1)
+tail -20 file to see 20
+tail -f file (to watch for events in file, system log is good one to watch)
+
+cd - to go to previous directory
+pushd
+popd
+
+
+to check out the PID: ps auxw | grep 2797
+
+which nc
+
+wikipedia reserved IP addresses when deciding what blocks to use for our VPC
+
+
+nc -l 1234
+nc localhost 1234 then talk to the listener
+
+netsat -vvz localhost 631
+
+echo $? - exit command of previous process in the shell
+
+
+shell script:
+
+#!/bin/bash
+
+if [ -z "$1"]; then
+  echo "Usage: $0<stuff>"
+  exit 1
+f1
+echo "do stuff"
+
+ls -l `which [` (feel which [ into ls -l)
+
+permission:
+mkdir -p dir1/dir2/dir3 (to make multiple folders at once)
+
+find /home/peter/ (list them all)
+find /home/peter/ -type f (for files)
+find /home/peter/ -type d (for directories)
+
+
+chmod +x tmp.sh (to make executable)
+chmod -x dir1 (to lock permissions)
+the order is read,write,execute
+ls -s bfile cfile (to make a pointer, open c file and you will see contents of b file)
+ln bfile dfile (hardlink, now exact same file)
+
+mode bits:
+user,group,other
+
+you can have r,w,x for each (r is 4, w is 2, x is 1)
+755 = you can r,w,x, group can r,x, all can r,x
+chmod +x -u (for just user)
+
+chmod +t dirc == chmod 1755 (sticky bit) you can add files but not mess with files in that directory
+suid = the important one , could be a security risk
+
+chmod -r 750 on directory (makes all directory 750, and also made all the files 750)
+
+
+############ DAY 2 ##########################################
+
+chmod 700 on private key or put in .ssh folder to ssh in
+if not in ssh:
+ssh -i file peter@server.com
+
+tmxu: ctrl b !
+
+top (to see running processes, cpu load)
+when you ctrl Z a process
+[1]+ Stopped
+can then refer to it as 1
+bg %1
+
+kill %1 (to kill 1)
+kill -19 (same as ctrl z)
+kill -9 (force quit)
+
+ps -fu peter | grep '[b]usywait.sh' | awk '{print $2}'| sudo xargs -i echo {} gets all busywait without the grep one, prints the PID columns
+
+xargs -i echo {}
+xargs -i kill {} (-i runs the command for each line of input)
+
+dd if=/dev/zero of=tempf2 bs=1G count=1
+free -m (see free memory)
+
+$$ is current process id
+
+iostat
+iostat -x 2
+
+states: R (running), S (sleeping)
+state D: (blocking), Z (zombie: just an entry in process table, not really running, will get cleaned up when reboot)
+
+df -h (disk free)
+
+ls -larth (most recent files at the bottom, human readable)
+touch flagfile
+touch --date="date here" flagfile
+find . -newer flagfile
+
+uptime (how long server has been up, can tell if they have a reboot schedule)
+ps -ux
+ps -fu
+
+find . -type f -name 'filename' -exec touch {} \;
+
+nmap IPADDRESS (tells you what ports are listening)
