@@ -901,9 +901,12 @@ def fact(n):
 #defaultdict default dict
 from collections import defaultdict
 d = {'k1':1}#normal dict, get keyError if you call k2
-d = defaultdict(object)
-d = defaultdict(lambda: 0)
-d['randomkey'] #will give value of 0 by default
+d = defaultdict(int) #0
+string = 'this is my name'
+for c in string:
+    d[c] += 1 #gives letter count
+d = defaultdict(lambda: 3)
+d['randomkey'] #will give value of 3 by default
 
 
 #ordereddict ordered dict (remembers order contents are added in)
@@ -923,6 +926,38 @@ from collections import namedtuple
 Dog = namedtuple('Dog','age breed name')#first arg is name of class, then attributes all in one space separated string
 sam = Dog(age=2,breed='lab',name='Sammy')
 #can call sam[0] or sam.age for Age
+
+from collections import deque
+de = deque([1,2,3])
+de.append(5) #[1,2,3,5]
+de.appendleft(6) #[6,1,2,3,5]
+de.pop()#pop right
+de.popleft()#pop left
+de.insert(4,3) #inserts 3 into index 4
+de.index(4,2,5)#first occurance of 4 between 2 and 5
+de.remove(3) #removes first occurance of 3
+de.extend([4,5,6])
+de.extendleft([7,8,9])
+de.rotate(3)#
+de.rotate(-3)#left
+de.reverse()
+
+from collections import Counter
+a = [1,2,3,4,5,2,3,1,2,3,3,1]
+c = Counter(a) #dict of count of each element Counter({3: 4, 1: 3, 2: 3, 4: 1, 5: 1})
+c[9]# = 0 (none in list)
+c = Counter(['this','is','a','list'])
+c['peter'] # = 0
+del c['peter']# deletes entry with 0 count
+c = Counter(a=4,b=2,c=0,d=-2)
+list(c.elements()) # ['a', 'a', 'a', 'a', 'b', 'b']
+Counter('peteralexandergillis').most_common() # most common letters in order of most to least
+Counter('peteralexandergillis').most_common(3) #3 most common letters tuple count [('e',4),('l',3),('a',2)]
+c = Counter(a=4, b=2, c=0, d=-2)
+d = Counter(a=1, b=2, c=3, d=4)
+c.subtract(d)
+c
+Counter({'a': 3, 'b': 0, 'c': -3, 'd': -6})
 
 import datetime
 t = datetime.time(5,25,1)
