@@ -889,7 +889,7 @@ not re.search(r'.*(.).*\1') #no char more than once
 re.search(r'[A-Za-z0-9]{10}') #must be 10 chars
 re.search(r'([A-Z].*){2}') #at least 2 capital letters
 re.search(r'([0-9].*){3}') #at least 3 digits
-re.findall('match','look for a match here','look for anothethere') #returns list of matches
+re.findall('match','look for a match here this is a match look for anothethere') #returns list of matches
 #could then to len() on this to find num
 
 #Recursion
