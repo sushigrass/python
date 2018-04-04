@@ -8,6 +8,12 @@ def is_leap(year):
 #print 1 to n separated by spaces
 print(*range(1, int(input())+1), sep='')
 
+
+#reverse a string
+name = "peter gillis"
+backwards = ""
+for i in xrange(len(name),0,-1):
+    backw += name[i-1]
 #multiplying fractions
 import operator
 def product(fracs):
