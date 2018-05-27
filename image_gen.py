@@ -4,35 +4,34 @@ from PIL import Image
 from midiutil.MidiFile import MIDIFile
 
 def main():
-    mf = MIDIFile(1)
-    track = 0
-    time = 0
-    mf.addTrackName(track,time,"Sample")
-    mf.addTempo(track,time,160)
-
-    channel = 0
-    volume = 100
     pix = []
-    for i in range(50):
+    for i in range(10):
         x = []
-        for q in range(50):
+        for q in range(10):
             r1 = random.randint(0,255)
             r2 = random.randint(0,255)
             r3 = random.randint(0,255)
             x.append((r1,r2,r3))
-            p1 = rgb_to_midi(r1)
-            p2 = rgb_to_midi(r2)
-            p3 = rgb_to_midi(r3)
-            time = q
-            print time
-            duration = 1
-            mf.addNote(track, channel, p1, q, duration, volume)
         pix.append(x)
     array = np.array(pix,dtype=np.uint8)
     new = Image.fromarray(array)
     new.save('new.png')
-    with open("output.mid", 'wb') as outf:
-        mf.writeFile(outf)
+    print list(array)
+
+def create_image():
+    pixels = []
+    size = 10
+    for i in range(size):
+        x = []
+        for q in range(size):
+            r1 = random.randint(0,255)
+            r2 = random.randint(0,255)
+            r3 = random.randint(0,255)
+            x.append((r1,r2,r3))
+        pixels.append(x)
+    array = np.array(pixels,dtype=np.uint8)
+    new = Image.fromarray(array)
+    new.save('new.png')
 
 def rgb_to_midi(rgb):
     return 21 + (rgb%87)
@@ -42,38 +41,33 @@ def pixels_to_midi():
     mf = MIDIFile(1)
     track = 0
     time = 0
-    mf.addTrackName(track,time,"Sample")
-    mf.addTempo(track,time,500)
-
     channel = 0
     volume = 100
-    time = 0
+    mf.addTrackName(track,time,"Sample")
+    mf.addTempo(track,time,1000)
     for i in pix:
-        p1 = rgb_to_midi(i[0])
         p2 = rgb_to_midi(i[1])
         p3 = rgb_to_midi(i[2])
         duration = 1
         if time % 4 == 0:
-            mf.addNote(track, channel, p1, time, 4, volume)
             mf.addNote(track, channel, p2, time, 4, volume)
             mf.addNote(track, channel, p3, time, 4, volume)
         else:
-            mf.addNote(track, channel, p1, time, duration, volume)
+            mf.addNote(track, channel, p3, time, duration, volume)
         time += 1
+    print "done"
     with open("green.mid", 'wb') as outf:
         mf.writeFile(outf)
 
 def pixels_to_midi2():
-    pix = get_image_data("green.jpg")
+    pix = get_image_data("small.jpg")
     mf = MIDIFile(1)
     track = 0
     time = 0
-    mf.addTrackName(track,time,"Sample")
-    mf.addTempo(track,time,1000)
-
     channel = 0
     volume = 100
-    time = 0
+    mf.addTrackName(track,time,"Sample")
+    mf.addTempo(track,time,1000)
     for i in xrange(len(pix)):
         if i >= len(pix)-4:
             break
@@ -82,13 +76,13 @@ def pixels_to_midi2():
         p3 = rgb_to_midi(pix[i+2])
         duration = 1
         if time % 4 == 0:
-            mf.addNote(track, channel, p1, time, 4, volume)
-            mf.addNote(track, channel, p2, time, 4, volume)
-            mf.addNote(track, channel, p3, time, 4, volume)
+            mf.addNote(track, channel, p1, time, 4, 120)
+            mf.addNote(track, channel, p2, time, 4, 120)
+            mf.addNote(track, channel, p3, time, 4, 120)
         else:
-            mf.addNote(track, channel, p1, time, duration, volume)
+            mf.addNote(track, channel, p1, time, duration, 50)
         time += 1
-    with open("green.mid", 'wb') as outf:
+    with open("small.mid", 'wb') as outf:
         mf.writeFile(outf)
 
 def get_image_data(img):
